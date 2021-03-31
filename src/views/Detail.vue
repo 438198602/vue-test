@@ -1,23 +1,6 @@
 <template>
-  <div class="home">
-    <van-search
-      v-model="state.searchTxt"
-      shape="round"
-      background="#4fc08d"
-      placeholder="请输入搜索关键词"
-      @search="onSearch"
-    />
-
-    <van-swipe :autoplay="3000" :height="200" lazy-render>
-      <van-swipe-item v-for="image in state.images" :key="image">
-        <img :src="image" />
-      </van-swipe-item>
-    </van-swipe>
-
-    <van-notice-bar
-      left-icon="volume-o"
-      text="在代码阅读过程中人们说脏话的频率是衡量代码质量的唯一标准。"
-    />
+  <div class="detail">
+    <MyHeader :title="state.title" />
 
     <van-list
       v-model:loading="state.loading"
@@ -37,28 +20,21 @@
 </template>
 
 <script>
-import { reactive, onActivated } from "vue";
-import { useRouter } from "vue-router";
+import { reactive, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import { getHomeList } from "@/api/index";
 
 export default {
   setup() {
     const state = reactive({
-      searchTxt: "",
-      images: [
-        "https://img.yzcdn.cn/vant/apple-1.jpg",
-        "https://img.yzcdn.cn/vant/apple-2.jpg",
-      ],
+      title: "",
       page: 1,
       list: [],
       loading: false,
       finished: false,
     });
     const router = useRouter();
-
-    const onSearch = (val) => {
-      console.log(val);
-    };
+    const route = useRoute();
 
     const _getHomeList = () => {
       setTimeout(async () => {
@@ -84,29 +60,17 @@ export default {
       router.push(`/detail/${item.id}?title=${item.title}`);
     };
 
-    onActivated(() => {
-      console.log("---Home onActivated---");
+    onMounted(() => {
+      state.title = route.query.title;
     });
 
-    return { state, onSearch, onLoad, listClick };
+    return { state, onLoad, listClick };
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.home {
-  .van-search {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 9;
-    width: 100%;
-  }
-  .van-swipe {
-    margin-top: 55px;
-  }
-  .van-notice-bar {
-    margin: 10px auto;
-  }
+.detail {
+  min-height: 100vh;
 }
 </style>

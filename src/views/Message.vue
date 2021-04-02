@@ -2,7 +2,11 @@
   <div class="message">
     <MyHeader title="系统消息" />
 
-    <van-pull-refresh v-model="state.refreshing" @refresh="onRefresh">
+    <van-pull-refresh
+      v-model="state.refreshing"
+      success-text="刷新成功"
+      @refresh="onRefresh"
+    >
       <van-list
         v-model:loading="state.loading"
         :finished="state.finished"

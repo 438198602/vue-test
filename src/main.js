@@ -22,6 +22,8 @@ import {
   Search,
   NoticeBar,
   Icon,
+  Grid,
+  GridItem,
 } from "vant";
 
 import Header from "./components/Header";
@@ -56,8 +58,9 @@ app
   .use(SwipeItem)
   .use(Search)
   .use(NoticeBar)
-  .use(Icon);
-
+  .use(Icon)
+  .use(Grid)
+  .use(GridItem);
+app.use(store).use(router);
 app.component("MyHeader", Header);
-
-app.use(store).use(router).mount("#app");
+app.mount("#app");
